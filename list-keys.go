@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
 
 	msgpack "github.com/hashicorp/go-msgpack/codec"
 	serf "github.com/hashicorp/serf/client"
@@ -26,11 +26,11 @@ func main() {
 	respCh := make(chan serf.NodeResponse)
 
 	if err = rpc.Query(&serf.QueryParam{
-			RequestAck: true,
-			Name: "list-keys",
-			AckCh: ackCh,
-			RespCh: respCh,
-		}); err != nil {
+		RequestAck: true,
+		Name:       "list-keys",
+		AckCh:      ackCh,
+		RespCh:     respCh,
+	}); err != nil {
 		panic(err)
 	}
 
