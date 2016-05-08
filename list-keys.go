@@ -8,11 +8,7 @@ import (
 	serf "github.com/hashicorp/serf/client"
 )
 
-const (
-	defaultEventKeyPrefix = "ether:"
-
-	listKeysQuery = "list-keys"
-)
+const listKeysQuery = "list-keys"
 
 func main() {
 	conf := &serf.Config{}
@@ -22,7 +18,7 @@ func main() {
 	flag.DurationVar(&conf.Timeout, "timeout", 0, "the RPC timeout")
 
 	var eventKeyPrefix string
-	flag.StringVar(&eventKeyPrefix, "prefix", defaultEventKeyPrefix, "the serf event prefix")
+	flag.StringVar(&eventKeyPrefix, "prefix", "ether:", "the serf event prefix")
 
 	flag.Parse()
 
