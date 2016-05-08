@@ -8,12 +8,21 @@ import (
 	serf "github.com/hashicorp/serf/client"
 )
 
+const (
+	defaultEventKeyPrefix = "ether:"
+
+	listKeysQuery = "list-keys"
+)
+
 func main() {
 	conf := &serf.Config{}
 
 	flag.StringVar(&conf.Addr, "addr", "127.0.0.1:7373", "the address to connect to")
 	flag.StringVar(&conf.AuthKey, "auth", "", "the RPC auth key")
 	flag.DurationVar(&conf.Timeout, "timeout", 0, "the RPC timeout")
+
+	var eventKeyPrefix string
+	flag.StringVar(&eventKeyPrefix, "prefix", defaultEventKeyPrefix, "the serf event prefix")
 
 	flag.Parse()
 
@@ -27,14 +36,14 @@ func main() {
 
 	if err = rpc.Query(&serf.QueryParam{
 		RequestAck: true,
-		Name:       "list-keys",
+		Name:       eventKeyPrefix + listKeysQuery,
 		AckCh:      ackCh,
 		RespCh:     respCh,
 	}); err != nil {
 		panic(err)
 	}
 
-	fmt.Println("Query 'list-keys' dispatched")
+	fmt.Printf("Query '%s%s' dispatched\n", eventKeyPrefix, listKeysQuery)
 
 	var resps int
 	var acks int
